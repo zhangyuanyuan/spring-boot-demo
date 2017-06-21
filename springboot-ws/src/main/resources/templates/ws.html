@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>spring boot + webscoket + 广播</title>
+</head>
+<body onload="disconnect()">
+<noscript><h1 style="color: #ff0000">不支持ws哦！</h1></noscript>
+<div>
+    <div>
+        <button id="connect" onclick="connect()">连接</button>
+        <button id="disconnect" disabled="disabled" onclick="disconnect()">断开</button>
+    </div>
+
+    <div id="convert"><label for="">输入你的名字</label><input type="text" id="name" />
+        <button id="sendName" onclick="sendName()">发送</button>
+        <p id="response"></p>
+    </div>
+</div>
+
+<script th:src="@{js/jquery.min.js}"></script>
+<script th:src="@{js/sockjs.min.js}"></script>
+<script th:src="@{js/stomp.min.js}"></script>
+<script>
+    var stompClient = null;
+
+    function setConnect(connected) {
+        $("#connect").attr("disabled", connected);
+        $("#disconnect").attr("disabled", !connected);
+        $("#convert").attr("visibility", connected ? "visible" : "hide");
+        $("#response").html();
+    }
+
+    function connect() {
+        var socket = new SockJS("/endpointWisely");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            setConnect(true);
+            console.log("connect: " + frame);
+            stompClient.subscribe('/topic/getResponse', function (response) {
+                showResponse(JSON.parse(response.body).message)
+            })
+        })
+    }
+
+    function disconnect() {
+        if (stompClient != null){
+            stompClient.disconnect();
+        }
+        setConnect(false);
+        console.log("connect: close");
+    }
+
+    function sendName() {
+        stompClient.send("/welcome", {}, JSON.stringify({'name': $("#name").val()}));
+    }
+
+    function showResponse(message) {
+        $("#response").html(message)
+    }
+</script>
+</body>
+</html>

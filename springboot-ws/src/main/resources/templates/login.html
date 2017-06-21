@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>登陆页</title>
+</head>
+<body>
+
+<div th:if="${param.error}">
+    无效账号或密码
+</div>
+<div th:if="${param.logout}">
+    你已经注销
+</div>
+<form th:action="@{/login}" method="post">
+    <div>
+        <lable for="">账号：</lable>
+        <input type="text" name="username"/>
+    </div>
+    <div>
+        <lable for="">密码：</lable>
+        <input type="password" name="password"/>
+    </div>
+    <div><input type="submit" value="登陆"/></div>
+</form>
+</body>
+</html>

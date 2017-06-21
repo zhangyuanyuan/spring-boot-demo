@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>聊天室</title>
+</head>
+<body>
+<noscript><h1 style="color: #ff0000">不支持ws哦！</h1></noscript>
+<p>聊天室</p>
+<form id="wiselyForm">
+    <textarea cols="60" rows="5" name="text"></textarea>
+    <input type="submit" value="提交"/>
+</form>
+
+<div id="output"></div>
+
+
+<script th:src="@{js/jquery.min.js}"></script>
+<script th:src="@{js/sockjs.min.js}"></script>
+<script th:src="@{js/stomp.min.js}"></script>
+<script th:inline="javascript">
+
+    $("#wiselyForm").submit(function (e) {
+        e.preventDefault();bootstrap-3.3.7-dist
+        var text = $("#wiselyForm").find('textarea[name="text"]').val();
+        stompClient.send("/chat", {}, text);
+    });
+
+    var socket = new SockJS("/endpointChat");
+    var stompClient = Stomp.over(socket);
+    stompClient.connect('guest', 'guest', function (frame) {
+        stompClient.subscribe('/user/queue/notifications', function (response) {
+            $("#output").append("<b>Received:" + response.body + "</b><br/>")
+        });
+    })
+</script>
+</body>
+</html>
