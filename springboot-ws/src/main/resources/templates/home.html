@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8" />
     <link th:href="@{bootstrap/css/bootstrap.css}" rel="stylesheet"/>
-    <title>登陆页</title>
+    <title sec:authentication="name"></title>
     <style>
         body{
             padding-top: 50px;
@@ -30,25 +30,19 @@
 
 <div class="container">
     <div class="starter-template">
-        <p th:if="${param.logout}" class="bg-danger">
-            无效账号或密码
-        </p>
-        <p th:if="${param.logout}" class="bg-warning">
-            你已经注销
-        </p>
+        <h1 th:text="${msg.title}"></h1>
 
-        <h2>使用账号密码登陆</h2>
+        <p class="bg-primary" th:text="${msg.content}"></p>
 
-        <form th:action="@{/login}" method="post">
-            <div class="form-control">
-                <lable for="">账号：</lable>
-                <input type="text" class="form-control" name="username"/>
-            </div>
-            <div class="form-control">
-                <lable for="">密码：</lable>
-                <input type="password" class="form-control" name="password"/>
-            </div>
-            <div><input type="submit" class="btn btn-primary" value="登陆"/></div>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+            <p class="bg-info" th:text="${msg.extraInfo}"></p>
+        </div>
+        <div sec:authorize="hasRole('ROLE_USER')">
+            <p class="bg-info">无更多信息</p>
+        </div>
+
+        <form th:action="@{/logout}" method="post">
+            <div><input type="submit" class="btn btn-primary" value="注销"/></div>
         </form>
     </div>
 </div>

@@ -839,7 +839,7 @@ mod.filter('routeSegmentParam', ['$routeSegment', function($routeSegment) {
  * You must provide a segment index as an argument to this directive to make it aware about which segment level in the tree
  * it should be linked to.
  *
- * *index.html*:
+ * *home.html*:
  * ```html
  * <ul>
  *     <li ng-class="{active: $routeSegment.startsWith('s1')}">
@@ -852,7 +852,7 @@ mod.filter('routeSegmentParam', ['$routeSegment', function($routeSegment) {
  * <div id="contents" app-view-segment="0"></div>
  * ```
  *
- * *section1.html*: (it will be loaded to div#contents in index.html)
+ * *section1.html*: (it will be loaded to div#contents in home.html)
  * ```html
  * <h4>Section 1</h4>
  * Section 1 contents.
