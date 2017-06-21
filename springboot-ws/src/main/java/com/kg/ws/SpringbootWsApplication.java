@@ -1,9 +1,12 @@
 package com.kg.ws;
 
+import com.kg.ws.support.CustomerRepositoryFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories(repositoryFactoryBeanClass = CustomerRepositoryFactoryBean.class)
 public class SpringbootWsApplication {
 
 	public static void main(String[] args) {

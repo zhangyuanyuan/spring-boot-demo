@@ -12,6 +12,6 @@ public class PersonController {
 
     @RequestMapping("/search")
     public Person search(String personName) {
-        return new Person(personName, 22, "nanjing");
+        return new Person(1L, personName, 22, "nanjing");
     }
 }
